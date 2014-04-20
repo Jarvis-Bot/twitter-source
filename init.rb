@@ -1,15 +1,16 @@
 require 'twitter'
 class TwitterSource
   def initialize
+    keys = YAML.load_file(File.join(File.dirname(__FILE__), 'config', 'config.yml'))
     stream = Twitter::Streaming::Client.new do |config|
-      config.consumer_key        = "CONSUMER_KEY"
-      config.consumer_secret     = "CONSUMER_SECRET"
-      config.access_token        = "ACCESS_TOKEN"
-      config.access_token_secret = "ACCESS_TOKEN_SECRET"
+      config.consumer_key        = keys['api_key']
+      config.consumer_secret     = keys['api_secret']
+      config.access_token        = keys['access_token']
+      config.access_token_secret = keys['access_token_secret']
     end
 
     stream.user(with: 'user') do |object|
-      Jarvis::Messages::Message.new('Twitter', build_message(object)) if is_accepted? object
+      Jarvis::Messages::Message.new('Twitter', build_message(object)) if accepted? object
     end
   end
 
@@ -28,7 +29,7 @@ class TwitterSource
     "[#{type}][#{name}] @#{screen_name}: #{message}"
   end
 
-  def is_accepted?(object)
+  def accepted?(object)
     (object.is_a? Twitter::Tweet) || (object.is_a? Twitter::DirectMessage)
   end
 end
