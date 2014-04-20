@@ -9,9 +9,7 @@ class TwitterSource
     end
 
     stream.user(with: 'user') do |object|
-      if (object.is_a? Twitter::Tweet) || (object.is_a? Twitter::DirectMessage)
-        Jarvis::Messages::Message.new('Twitter', build_message(object))
-      end
+      Jarvis::Messages::Message.new('Twitter', build_message(object)) if is_accepted? object
     end
   end
 
@@ -28,5 +26,9 @@ class TwitterSource
       type        = 'DM'
     end
     "[#{type}][#{name}] @#{screen_name}: #{message}"
+  end
+
+  def is_accepted?(object)
+    (object.is_a? Twitter::Tweet) || (object.is_a? Twitter::DirectMessage)
   end
 end
