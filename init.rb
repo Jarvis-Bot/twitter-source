@@ -18,15 +18,13 @@ class TwitterSource
     message = object.text.strip
     case object
     when Twitter::Tweet
-      screen_name = object.user.screen_name.strip
-      name        = Rainbow(object.user.name.strip).color(:white)
+      screen_name = Rainbow("@#{object.user.screen_name.strip}").color(:white)
       type        = 'Tw'
     when Twitter::DirectMessage
-      screen_name = object.sender.screen_name.strip
-      name        = Rainbow(object.sender.name.strip).color(:white)
+      screen_name = Rainbow("@#{object.sender.screen_name.strip}").color(:white)
       type        = 'DM'
     end
-    "[#{type}][#{name}] @#{screen_name}: #{message}"
+    "[#{type}][#{screen_name}]: #{message}"
   end
 
   def accepted?(object)
