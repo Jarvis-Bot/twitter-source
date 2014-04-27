@@ -1,4 +1,5 @@
 require 'twitter'
+require 'yaml'
 class TwitterSource
   def initialize
     keys = YAML.load_file(File.join(File.dirname(__FILE__), 'config', 'config.yml'))
