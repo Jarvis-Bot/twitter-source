@@ -8,7 +8,7 @@ author:
 specs:
   type: "source"
   name: "Twitter"
-  version: "0.2"
+  version: "0.2.1"
   description: "Interact with Jarvis via Twitter."
   keywords: [twitter, tweet]
   homepage: "https://github.com/Jarvis-Bot/twitter-source"
