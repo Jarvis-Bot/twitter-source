@@ -11,7 +11,7 @@ class TwitterSource
     end
 
     stream.user(with: 'user') do |object|
-      Jarvis::Messages::Message.new('Twitter', build_message(object)) if accepted? object
+      Jarvis::Messages::Message.new('Twitter', build_message(object), object) if accepted? object
     end
   end
 
