@@ -1,24 +1,29 @@
+---
 author:
-  name: "Victor Bersy"
-  mail: "victor.bersy@gmail.com"
+  name: Victor Bersy
   contacts:
-    github: "VictorBersy"
-    twitter: "VictorBersy"
-
+    email: victorbersy+jarvis@gmail.com
+    github: VictorBersy
+    twitter: VictorBersy
 specs:
-  type: "source"
-  name: "Twitter"
-  version: "0.2.1"
-  description: "Interact with Jarvis via Twitter."
-  keywords: [twitter, tweet]
-  homepage: "https://github.com/Jarvis-Bot/twitter-source"
+  name: Twitter
+  description: Interact with Jarvis via Twitter.
+  keywords:
+  - twitter
+  - tweet
+  - official
+  homepage: https://github.com/Jarvis-Bot/twitter-source
+  version: 2.0.0
+  class_name: TwitterSource
+  type: source
   license:
-    type: "MIT"
-    url: "https://github.com/Jarvis-Bot/twitter-source/LICENSE"
+    type: MIT
+    url: https://github.com/Jarvis-Bot/twitter-source/LICENSE
   repository:
-    type: "git"
-    url: "https://github.com/Jarvis-Bot/twitter-source.git"
-  color message: "#55ACEE"
-
+    type: git
+    url: https://github.com/Jarvis-Bot/twitter-source.git
+  dependencies:
+    jarvis: "~> 2.0"
 source:
-  class name: "TwitterSource"
+  service_name: twitter
+  color_message: "#55ACEE"

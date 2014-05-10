@@ -2,7 +2,7 @@ require 'twitter'
 require 'yaml'
 class TwitterSource
   def initialize
-    keys = YAML.load_file(File.join(File.dirname(__FILE__), 'config', 'config.yml'))
+    keys = keys_file
     stream = Twitter::Streaming::Client.new do |config|
       config.consumer_key        = keys['api_key']
       config.consumer_secret     = keys['api_secret']
@@ -13,6 +13,12 @@ class TwitterSource
     stream.user(with: 'user') do |object|
       Jarvis::Messages::Message.new('Twitter', build_message(object), object) if accepted? object
     end
+  end
+
+  def keys_file
+    YAML.load_file(File.join(File.dirname(__FILE__), 'config', 'config.yml'))
+  rescue Errno::ENOENT
+    Jarvis::Utility::Logger.error("config.yml not found in #{__dir__}. Please, configure TwitterSource with 'jarvis configure'")
   end
 
   def build_message(object)
