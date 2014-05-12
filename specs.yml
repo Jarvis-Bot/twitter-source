@@ -13,7 +13,7 @@ specs:
   - tweet
   - official
   homepage: https://github.com/Jarvis-Bot/twitter-source
-  version: 2.0.0
+  version: 2.0.1
   class_name: TwitterSource
   type: source
   license:

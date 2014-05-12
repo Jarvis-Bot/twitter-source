@@ -11,7 +11,9 @@ class TwitterSource
     end
 
     stream.user(with: 'user') do |object|
-      Jarvis::Messages::Message.new('Twitter', build_message(object), object) if accepted? object
+      @object = object
+      @white_list = object if object.is_a? Twitter::Streaming::FriendList
+      Jarvis::Messages::Message.new('Twitter', built_message, object) if accepted?
     end
   end
 
@@ -21,20 +23,29 @@ class TwitterSource
     Jarvis::Utility::Logger.error("config.yml not found in #{__dir__}. Please, configure TwitterSource with 'jarvis configure'")
   end
 
-  def build_message(object)
-    message = object.text.strip
-    case object
+  def built_message
+    message = @object.text.strip
+    case @object
     when Twitter::Tweet
-      screen_name = Rainbow("@#{object.user.screen_name.strip}").color(:white)
+      screen_name = Rainbow("@#{@object.user.screen_name.strip}").color(:white)
       type        = 'Tw'
     when Twitter::DirectMessage
-      screen_name = Rainbow("@#{object.sender.screen_name.strip}").color(:white)
+      screen_name = Rainbow("@#{@object.sender.screen_name.strip}").color(:white)
       type        = 'DM'
     end
     "[#{type}][#{screen_name}]: #{message}"
   end
 
-  def accepted?(object)
-    (object.is_a? Twitter::Tweet) || (object.is_a? Twitter::DirectMessage)
+  def accepted?
+    ((@object.is_a? Twitter::Tweet) || (@object.is_a? Twitter::DirectMessage)) && white_listed?
+  end
+
+  def white_listed?
+    case @object
+    when Twitter::Tweet
+      @white_list.include? @object.user.id
+    when Twitter::DirectMessage
+      @white_list.include? @object.sender.id
+    end
   end
 end
